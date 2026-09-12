@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * UserController：接口层，负责接收浏览器请求并返回数据
- *
- * @RestController 表示这个类里的方法返回值会直接变成 JSON（不是跳转页面）
- * @RequestMapping("/user") 表示这个类下所有接口都以 /user 开头
+/*
+  UserController：接口层，负责接收浏览器请求并返回数据
+
+  @RestController 表示这个类里的方法返回值会直接变成 JSON（不是跳转页面）
+  @RequestMapping("/user") 表示这个类下所有接口都以 /user 开头
  */
 @RestController
 @RequestMapping("/user")
