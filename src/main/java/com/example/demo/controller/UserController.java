@@ -2,9 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,7 @@ public class UserController {
      * （不用自己 new，这就是"依赖注入"）
      */
     public UserController(UserMapper userMapper) {
+
         this.userMapper = userMapper;
     }
 
@@ -37,4 +36,10 @@ public class UserController {
     public List<User> list() {
         return userMapper.selectList(null);
     }
+    @PostMapping("/add")
+    public String add(@RequestBody User user){
+        userMapper.insert(user);
+        return "add success";
+    }
+
 }
