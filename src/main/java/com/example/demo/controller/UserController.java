@@ -18,19 +18,19 @@ public class UserController {
 
     private final UserMapper userMapper;
 
-    /**
-     * 构造方法注入：Spring 启动时自动把 UserMapper 的实现塞进来
-     * （不用自己 new，这就是"依赖注入"）
+    /*
+      构造方法注入：Spring 启动时自动把 UserMapper 的实现塞进来
+      （不用自己 new，这就是"依赖注入"）
      */
     public UserController(UserMapper userMapper) {
 
         this.userMapper = userMapper;
     }
 
-    /**
-     * GET /user/list
-     * selectList(null) 相当于执行：SELECT id, username, password, create_time FROM user
-     * 返回值 List<User> 会被 Spring 自动转成 JSON 数组返回给浏览器
+    /*
+      GET /user/list
+      selectList(null) 相当于执行：SELECT id, username, password, create_time FROM user
+      返回值 List<User> 会被 Spring 自动转成 JSON 数组返回给浏览器
      */
     @GetMapping("/list")
     public List<User> list() {
@@ -41,5 +41,38 @@ public class UserController {
         userMapper.insert(user);
         return "add success";
     }
+    @PutMapping("/update")
+    public String update(@RequestBody User user){
+        int result = userMapper.updateById(user);
+        if (result > 0){
+            return "update success";
+        }else {
+            return "update failed";
+        }
+    }
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable Long id){
+        if (userMapper.deleteById(id) > 0) {
+            return "delete success";
+        } else {
+            return "delete failed";
+        }
+    }
+//    @DeleteMapping("/delete")
+//    public String delete(@RequestParam String id){
+//        int result = userMapper.deleteById(id);
+//        return "delete success, delete id =" + result;
+//    }
+
+
+
+
+
+
+
+
+
+
+
 
 }
