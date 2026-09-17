@@ -38,6 +38,7 @@ public class UserController {
     }
     @PostMapping("/add")
     public String add(@RequestBody User user){
+
         return userService.addUser(user);
     }
     @PutMapping("/update")
