@@ -1,9 +1,8 @@
 package com.example.demo.controller;
-
 import com.example.demo.entity.User;
-import com.example.demo.mapper.UserMapper;
+import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /*
@@ -16,63 +15,72 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserMapper userMapper;
+//    private final UserMapper userMapper;
 
     /*
       构造方法注入：Spring 启动时自动把 UserMapper 的实现塞进来
       （不用自己 new，这就是"依赖注入"）
      */
-    public UserController(UserMapper userMapper) {
-
-        this.userMapper = userMapper;
-    }
+//    public UserController(UserMapper userMapper) {
+//
+//        this.userMapper = userMapper;
+//    }
 
     /*
       GET /user/list
       selectList(null) 相当于执行：SELECT id, username, password, create_time FROM user
       返回值 List<User> 会被 Spring 自动转成 JSON 数组返回给浏览器
      */
+    @Autowired private UserService userService;
     @GetMapping("/list")
     public List<User> list() {
-        return userMapper.selectList(null);
+        return userService.getUser();
     }
     @PostMapping("/add")
     public String add(@RequestBody User user){
-        userMapper.insert(user);
-        return "add success";
+        return userService.addUser(user);
     }
     @PutMapping("/update")
     public String update(@RequestBody User user){
-        int result = userMapper.updateById(user);
-        if (result > 0){
-            return "update success";
-        }else {
-            return "update failed";
-        }
+        return userService.updateUser(user);
     }
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
-        if (userMapper.deleteById(id) > 0) {
-            return "delete success";
-        } else {
-            return "delete failed";
-        }
+        return userService.deleteUser(id);
     }
+
+
+
+//    @GetMapping("/list")
+//    public List<User> list() {
+//        return userMapper.selectList(null);
+//    }
+//    @PostMapping("/add")
+//    public String add(@RequestBody User user){
+//        userMapper.insert(user);
+//        return "add success";
+//    }
+//    @PutMapping("/update")
+//    public String update(@RequestBody User user){
+//        int result = userMapper.updateById(user);
+//        if (result > 0){
+//            return "update success";
+//        }else {
+//            return "update failed";
+//        }
+//    }
+//    @DeleteMapping("/delete/{id}")
+//    public String delete(@PathVariable Long id){
+//        if (userMapper.deleteById(id) > 0) {
+//            return "delete success";
+//        } else {
+//            return "delete failed";
+//        }
+//    }
 //    @DeleteMapping("/delete")
 //    public String delete(@RequestParam String id){
 //        int result = userMapper.deleteById(id);
 //        return "delete success, delete id =" + result;
 //    }
-
-
-
-
-
-
-
-
-
-
-
 
 }
