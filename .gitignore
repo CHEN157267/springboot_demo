@@ -24,3 +24,7 @@ application-local.properties
 # ===== 操作系统垃圾文件 =====
 .DS_Store
 Thumbs.db
+
+# ===== 个人学习笔记（含姓名等私人信息，只留本地，绝不提交）=====
+# 仓库是公开的，这一行拦住"手滑 git add ."把笔记带上 GitHub
+学习笔记-*.md
