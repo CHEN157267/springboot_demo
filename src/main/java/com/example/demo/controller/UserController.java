@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import com.example.demo.common.Result;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,12 @@ public class UserController {
      */
     @Autowired private UserService userService;
     @GetMapping("/list")
-    public List<User> list() {
-        return userService.getUser();
+    public Result<List<User>> list() {
+        List<User> list = userService.getUser();
+        if (!list.isEmpty()){
+            return Result.success(list);
+        }
+        return Result.error("No data found");
     }
     @PostMapping("/add")
     public String add(@RequestBody User user){

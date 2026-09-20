@@ -1,5 +1,44 @@
 package com.example.demo.common;
 
 public class Result<T> {
+
     private T data;
+    private int code;
+    private String message;
+    private Result(T data, int code, String message) {
+        this.data = data;
+        this.code = code;
+        this.message = message;
+    }
+    public static <T> Result<T> success(T data){
+        return new Result<>(data, 200, "success");
+    }
+    public static <T> Result<T> error(String message){
+        return new Result<>(null, 500, message);
+    }
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+
 }
