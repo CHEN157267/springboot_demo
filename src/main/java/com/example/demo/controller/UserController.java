@@ -36,23 +36,51 @@ public class UserController {
     @GetMapping("/list")
     public Result<List<User>> list() {
         List<User> list = userService.getUser();
-        if (!list.isEmpty()){
-            return Result.success(list);
-        }
-        return Result.error("No data found");
+        return Result.success(list);
     }
     @PostMapping("/add")
-    public String add(@RequestBody User user){
+    public Result<User> add(@RequestBody User user){
 
-        return userService.addUser(user);
+        int result = userService.addUser(user);
+        switch (result){
+            case 0:
+                return Result.success(user);
+            case -2:
+                return Result.error(409,"username already exists");
+            default:
+                return Result.error("add failed");
+        }
     }
     @PutMapping("/update")
-    public String update(@RequestBody User user){
-        return userService.updateUser(user);
+    public Result<User> update(@RequestBody User user){
+
+        int result = userService.updateUser(user);
+       switch (result){
+           case -1:
+               return  Result.error(404,"userid unexist");
+           case -2:
+               return Result.error(409,"username already exists");
+           case 0:
+               return Result.success(user);
+           case 1:
+               return Result.error("The username is consistent with the one before the modification");
+           default:
+               return Result.error("update failed");
+       }
+
     }
+
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable Long id){
-        return userService.deleteUser(id);
+    public Result<Long> delete(@PathVariable Long id){
+        int result = userService.deleteUser(id);
+        switch (result){
+            case -1:
+                return Result.error(404,"User ID does not exist");
+            case 0:
+                return Result.success(id);
+            default:
+                return Result.error("delete failed");
+        }
     }
 
 

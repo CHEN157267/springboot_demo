@@ -15,40 +15,39 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public List<User> getUser() {
-
         return userMapper.selectList(null);
     }
 
     @Override
-    public String addUser(User user) {
+    public int addUser(User user) {
+        int result;
         if (userMapper.selectCount(new QueryWrapper<User>().eq("username",user.getUsername())) != 0L){
-            return "username already exists";
+            return -2;
         }
-        int result = userMapper.insert(user);
+        result = userMapper.insert(user);
         if (result > 0) {
-            return "add success";
-        } else {
-            return "add failed";
+            return 0;
         }
+        return 1;
     }
 
     @Override
-    public String updateUser(User user) {
-        int result = userMapper.updateById(user);
-        if (result > 0) {
-            return "update success";
-        } else {
-            return "update failed";
-        }
+    public int updateUser(User user) {
+        if (!(userMapper.exists(new QueryWrapper<User>().eq("id", user.getId()))))
+            return -1;
+        if (userMapper.selectCount(new QueryWrapper<User>().eq("username", user.getUsername()).ne("id", user.getId())) != 0L)
+            return -2;
+        if (userMapper.updateById(user) > 0)
+            return 0;
+        return 1;
+
     }
 
     @Override
-    public String deleteUser(Long id) {
-        int result = userMapper.deleteById(id);
-        if (result > 0) {
-            return "delete success";
-        } else {
-            return "delete failed";
-        }
+    public int deleteUser(Long id) {
+       int result = userMapper.deleteById(id);
+       if (result > 0)
+           return 0;
+      return -1;
     }
 }

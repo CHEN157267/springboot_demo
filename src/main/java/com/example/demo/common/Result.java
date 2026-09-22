@@ -16,6 +16,10 @@ public class Result<T> {
     public static <T> Result<T> error(String message){
         return new Result<>(null, 500, message);
     }
+    public static <T> Result<T> error(int code, String message){
+        return new Result<>(null, code, message);
+    }
+
     public T getData() {
         return data;
     }
