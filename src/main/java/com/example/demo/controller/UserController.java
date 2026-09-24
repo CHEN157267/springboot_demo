@@ -13,16 +13,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private final UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
     /*
       GET /user/list
       selectList(null) 相当于执行：SELECT id, username, password, create_time FROM user
       返回值 List<User> 会被 Spring 自动转成 JSON 数组返回给浏览器
      */
-//    @Autowired private UserService userService;
-    private final UserService userService;
-    private UserController(UserService userService) {
-        this.userService = userService;
-    }
     @GetMapping("/list")
     public Result<List<User>> list() {
         return Result.success(userService.getUser());
