@@ -2,6 +2,7 @@ package com.example.demo.controller;
 import com.example.demo.common.Result;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class UserController {
         return Result.success(userService.getUser());
     }
     @PostMapping("/add")
-    public Result<User> add(@RequestBody User user){
+    public Result<User> add(@Valid @RequestBody User user){
         int result = userService.addUser(user);
         return switch (result) {
             case 0 -> Result.success(user);
@@ -36,14 +37,13 @@ public class UserController {
         };
     }
     @PutMapping("/update")
-    public Result<User> update(@RequestBody User user){
+    public Result<User> update(@Valid @RequestBody User user){
 
         int result = userService.updateUser(user);
        return switch (result){
            case -1 -> Result.error(404,"userid unexist");
            case -2 ->Result.error(409,"username already exists");
            case 0 ->Result.success(user);
-           case 1 ->Result.error("The username is consistent with the one before the modification");
            default -> Result.error("update failed");
        };
 

@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +19,10 @@ public class User {
     /** 主键，对应数据库的 id 列；IdType.AUTO 表示交给数据库自增 */
     @TableId(type = IdType.AUTO)
     private Long id;
-
+    @NotBlank(message = "用户名不能为空")
     private String username;
-
+    @NotBlank(message = "密码不能为空")
+    @Pattern(regexp = "[_a-zA-Z0-9]{6,20}",message = "密码格式不正确")
     private String password;
 
     /** 对应 create_time 列（下划线转驼峰在配置文件里开了） */
