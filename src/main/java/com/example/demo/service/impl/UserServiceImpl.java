@@ -2,12 +2,15 @@ package com.example.demo.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.mapper.UserMapper;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+    // 密码加密器（它无状态、线程安全，一个实例全局够用；所以不用放进构造器。）
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private final UserMapper userMapper;
     public UserServiceImpl(UserMapper userMapper) {
         this.userMapper = userMapper;
@@ -23,6 +26,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.selectCount(new QueryWrapper<User>().eq("username",user.getUsername())) != 0L){
             return -2;
         }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         result = userMapper.insert(user);
         if (result > 0) {
             return 0;
@@ -36,6 +40,7 @@ public class UserServiceImpl implements UserService {
             return -1;
         if (userMapper.selectCount(new QueryWrapper<User>().eq("username", user.getUsername()).ne("id", user.getId())) != 0L)
             return -2;
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         if (userMapper.updateById(user) > 0)
             return 0;
         return 1;
