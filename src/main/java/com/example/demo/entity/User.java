@@ -3,10 +3,13 @@ package com.example.demo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 /**
  * 用户实体类：一张 Java 类 ↔ 数据库里的一张表
@@ -23,6 +26,7 @@ public class User {
     private String username;
     @NotBlank(message = "密码不能为空")
     @Pattern(regexp = "[_a-zA-Z0-9]{6,20}",message = "密码格式不正确")
+    @JsonProperty(access = WRITE_ONLY)
     private String password;
 
     /** 对应 create_time 列（下划线转驼峰在配置文件里开了） */
