@@ -1,10 +1,7 @@
 package com.example.demo.common;
 
-import io.swagger.v3.oas.annotations.Operation;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
-//@Tag(name = "返回结果类", description = "统一结果类")
+
 public class Result<T> {
     @Schema(description = "数据")
     private T data;
