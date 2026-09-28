@@ -1,9 +1,16 @@
 package com.example.demo.common;
 
-public class Result<T> {
+import io.swagger.v3.oas.annotations.Operation;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+//@Tag(name = "返回结果类", description = "统一结果类")
+public class Result<T> {
+    @Schema(description = "数据")
     private T data;
+    @Schema(description = "状态码")
     private int code;
+    @Schema(description = "提示信息")
     private String message;
     private Result(T data, int code, String message) {
         this.data = data;
