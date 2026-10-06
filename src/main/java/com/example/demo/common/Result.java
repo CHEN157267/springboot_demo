@@ -2,6 +2,7 @@ package com.example.demo.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "返回包装数据的类")
 public class Result<T> {
     @Schema(description = "数据")
     private T data;
