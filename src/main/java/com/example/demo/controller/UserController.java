@@ -34,35 +34,20 @@ public class UserController {
     @PostMapping("/add")
     @Operation(summary = "添加用户", description = "添加一个新用户")
     public Result<User> add(@Valid @RequestBody User user){
-        int result = userService.addUser(user);
-        return switch (result) {
-            case 0 -> Result.success(user);
-            case -2 -> Result.error(409, "username already exists");
-            default -> Result.error("add failed");
-        };
+        userService.addUser(user);
+        return Result.success(user);
     }
     @PutMapping("/update")
     @Operation(summary = "更新用户", description = "更新指定 ID 的用户信息")
     public Result<User> update(@Valid @RequestBody User user){
-
-        int result = userService.updateUser(user);
-       return switch (result){
-           case -1 -> Result.error(404,"userid unexist");
-           case -2 ->Result.error(409,"username already exists");
-           case 0 ->Result.success(user);
-           default -> Result.error("update failed");
-       };
-
+        userService.updateUser(user);
+        return Result.success(user);
     }
 
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除用户", description = "删除指定 ID 的用户")
     public Result<Long> delete(@PathVariable Long id){
-        int result = userService.deleteUser(id);
-        return switch (result){
-            case -1 ->Result.error(404,"User ID does not exist");
-            case 0 ->Result.success(id);
-            default ->Result.error("delete failed");
-        };
+        userService.deleteUser(id);
+        return Result.success(id);
     }
 }
