@@ -17,13 +17,13 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
-        log.warn("参数错误",e);
+        log.warn("参数错误，{}",e.getMessage());
         return Result.error(400,e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
     }
 
     @ExceptionHandler(BusinessException.class)
     public Result<Void> handleBusinessException(BusinessException e){
-        log.warn("业务异常",e);
+        log.warn("业务异常，{}",e.getMessage());
         return Result.error(e.getCode(),e.getMessage());
     }
 
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceAccessException.class)
     public Result<Void> handleResourceAccessException(ResourceAccessException e){
-        log.warn("AI 服务响应超时，请稍后再试",e);
+        log.warn("AI 服务响应超时，请稍后再试，{}",e.getMessage());
         return Result.error(503, "AI 服务响应超时，请稍后再试");
     }
 

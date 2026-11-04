@@ -14,13 +14,12 @@ public class AiServiceImpl implements AiService{
     }
 
     @Override
-    public Result<String> chat(String q) {
+    public String chat(String q) {
         // 验证对话内容是否为空，其中isBlank()方法用于判断字符串是否为空白或者纯空格
         if (q == null || q.isBlank()) {
             throw new BusinessException("对话内容不能为空", 400);
         }
         q = q.trim();
-        String answer = chatClient.prompt().user(q).call().content();
-        return Result.success(answer) ;
+        return chatClient.prompt().user(q).call().content();
     }
 }

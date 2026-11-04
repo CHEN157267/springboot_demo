@@ -19,6 +19,6 @@ public class AiController {
     @GetMapping("/chat")
     @Operation(summary = "AI聊天", description = "与deepseek对话")
     public Result<String> chat(@RequestParam String q){
-        return aiService.chat(q) ;
+        return Result.success(aiService.chat(q)) ;
     }
 }
