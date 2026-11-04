@@ -30,6 +30,9 @@ public class RagLoader implements CommandLineRunner {
         seq = 0;
         // 下面五步
         for (Resource r : docs) {
+            //README.md 是给人看的说明，不是语料，跳过（否则会被当成第四篇文档入库）
+            if (r.getFilename() != null && r.getFilename().startsWith("README"))
+                continue;
             int before = allChunks.size();
             // 读取文件内容
             String content = new String(r.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
