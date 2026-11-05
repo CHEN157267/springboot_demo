@@ -39,7 +39,11 @@ public class RagServiceImpl implements RagService {
                     .score(doc.getScore())
                     .chunkIndex(idx)
                      .content(doc.getText())
-                     .preview(doc.getText().replace("\n", " ").replaceAll("\\s+", " ").substring(0, Math.min(doc.getText().length(), 50)));
+                     .preview(doc.getText()
+                             .replace("\n", " ")
+                             .replaceAll("\\s+", " "));
+                             ragHit.setPreview(ragHit.getPreview().substring(0, Math.min(ragHit.getPreview()
+                                     .length(), 50)));
             ragHits.add(ragHit);
         }
         return ragHits;
