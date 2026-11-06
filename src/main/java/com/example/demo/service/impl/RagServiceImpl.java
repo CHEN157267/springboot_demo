@@ -42,8 +42,9 @@ public class RagServiceImpl implements RagService {
                      .preview(doc.getText()
                              .replace("\n", " ")
                              .replaceAll("\\s+", " "));
-                             ragHit.setPreview(ragHit.getPreview().substring(0, Math.min(ragHit.getPreview()
-                                     .length(), 50)));
+             String flat = ragHit.getPreview();
+             ragHit.setPreview(flat.substring(0, Math.min(flat
+                     .length(), 50)));
             ragHits.add(ragHit);
         }
         return ragHits;
