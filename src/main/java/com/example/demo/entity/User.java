@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,6 +33,7 @@ public class User {
     @Pattern(regexp = "[_a-zA-Z0-9]{6,20}",message = "密码格式不正确")
     @JsonProperty(access = WRITE_ONLY)
     @Schema(description = "密码")
+    @TableField(select = false)
     private String password;
 
     /** 对应 create_time 列（下划线转驼峰在配置文件里开了） */
