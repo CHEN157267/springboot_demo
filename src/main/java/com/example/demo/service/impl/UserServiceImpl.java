@@ -45,10 +45,14 @@ public class UserServiceImpl implements UserService {
             log.info("缓存未命中：回源查库并写入缓存");
             return result;
         }
-        catch (DataAccessException | JsonProcessingException e) {
-            evictCache("user:list");
-            log.warn("Redis模块异常，{}",e.getMessage());
-            return userMapper.selectList(null);
+            catch (JsonProcessingException e) {
+                evictCache("user:list");
+                log.warn("缓存数据损坏，已清除，{}", e.getMessage());
+                return userMapper.selectList(null);
+        }
+            catch (DataAccessException e) {
+                log.warn("Redis 不可用，直接回源，{}", e.getMessage());
+                return userMapper.selectList(null);
         }
     }
 
