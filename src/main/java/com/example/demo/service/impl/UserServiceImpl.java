@@ -33,10 +33,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUser() {
         try {
-            String users = stringRedisTemplate.opsForValue().get("user:list");
-            if (users != null) {
+            String json = stringRedisTemplate.opsForValue().get("user:list");
+            if (json != null) {
                 log.info("缓存命中：从 Redis 读取用户列表");
-                return objectMapper.readValue(users, new TypeReference<List<User>>() {
+                return objectMapper.readValue(json, new TypeReference<List<User>>() {
                 });
             }
 
@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
             return result;
         }
         catch (DataAccessException | JsonProcessingException e) {
+            evictCache("user:list");
             log.warn("Redis模块异常，{}",e.getMessage());
             return userMapper.selectList(null);
         }
@@ -86,8 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-       int result = userMapper.deleteById(id);
-       if (result > 0) {
+       if (userMapper.deleteById(id) > 0) {
            evictCache("user:list");
            return;
        }

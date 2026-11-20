@@ -15,39 +15,43 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    //方法形参校验（@Valid @RequestBody抛	 body 里字段校验失败（username 空））
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         log.warn("参数错误，{}",e.getMessage());
         return Result.error(400,e.getBindingResult().getFieldErrors().get(0).getDefaultMessage());
     }
 
+    //业务逻辑
     @ExceptionHandler(BusinessException.class)
     public Result<Void> handleBusinessException(BusinessException e){
         log.warn("业务异常，{}",e.getMessage());
         return Result.error(e.getCode(),e.getMessage());
     }
 
+    //Spring AI抛  重试也没用的错：key 无效、余额不足、参数不合法、模型不存在
     @ExceptionHandler(NonTransientAiException.class)
     public Result<Void> handleNoTransientAiException(NonTransientAiException e){
         log.error("AI 服务暂时不可用，请联系管理员",e);
         return Result.error(503, "AI 服务暂时不可用，请联系管理员");
     }
 
+    //Spring的HTTP 客户端抛  连不上/等太久：DNS 失败、连接被拒、读超时（设置尝试三次）
     @ExceptionHandler(ResourceAccessException.class)
     public Result<Void> handleResourceAccessException(ResourceAccessException e){
         log.warn("AI 服务响应超时，请稍后再试，{}",e.getMessage());
         return Result.error(503, "AI 服务响应超时，请稍后再试");
     }
 
-    // 处理缺少必需参数的异常
+    // 处理缺少必需请求参数的异常（@RequestParam抛  URL 上参数缺失（比如说RagController里，用户不写q导致/rag/search 不带 q））
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Result<Void> handleMissingParam(MissingServletRequestParameterException e){
         log.warn("缺少必需参数: {}", e.getParameterName());      // 只记一行，不打堆栈
         return Result.error(400, "缺少必需参数：" + e.getParameterName());
     }
 
-    // 处理资源未找到的异常
-
+    // 处理资源未找到异常(Spring MVC 静态资源抛  favicon.ico 之类 404)
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Result<Void> handleNoResourceFoundException(NoResourceFoundException e){

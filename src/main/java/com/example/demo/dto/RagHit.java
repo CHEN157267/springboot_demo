@@ -71,9 +71,7 @@ public class RagHit {
     public String getPreview() {
         return preview;
     }
-    public String getContent() {
-        return content;
-    }
+    public String getContent() {return content;}
     public void setContent(String content) {
         this.content = content;
     }

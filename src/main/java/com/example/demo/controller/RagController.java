@@ -15,16 +15,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/rag")
 public class RagController {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RagController.class);
     private final RagService ragService;
     public RagController(RagService ragService) {
         this.ragService = ragService;
     }
     @GetMapping("/search")
     public Result<List<RagHit>> searchTest(@RequestParam String q, @RequestParam(defaultValue = "5") int topK) {
+        if (q == null || q.isBlank()) {
+            log.warn("q 为空，已拒绝");
+            return Result.error(400, "q 不能为空");
+        }
+
         return Result.success(ragService.search(q, topK));
     }
     @GetMapping("/ask")
     public Result<String> answer(@RequestParam String q,@RequestParam(defaultValue = "5") int topK){
+        if (q == null || q.isBlank()) {
+            log.warn("q 为空，已拒绝");
+            return Result.error(400, "q 不能为空");
+        }
+
         return Result.success(ragService.ask(q, topK));
     }
 }

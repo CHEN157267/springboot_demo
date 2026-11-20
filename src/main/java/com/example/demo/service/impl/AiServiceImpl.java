@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.common.Result;
+
 import com.example.demo.exception.BusinessException;
 import com.example.demo.service.AiService;
 import org.springframework.ai.chat.client.ChatClient;
