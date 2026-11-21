@@ -55,6 +55,10 @@ public class UserServiceImpl implements UserService {
                 return userMapper.selectList(null);
         }
     }
+    @Override
+    public User getUserById(Long id) {
+        return userMapper.selectById(id);
+    }
 
     @Override
     public void addUser(User user) {

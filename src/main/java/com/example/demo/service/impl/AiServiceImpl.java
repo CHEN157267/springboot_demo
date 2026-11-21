@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 
+import com.example.demo.agent.UserTools;
 import com.example.demo.exception.BusinessException;
 import com.example.demo.service.AiService;
 import org.springframework.ai.chat.client.ChatClient;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AiServiceImpl implements AiService{
     private final ChatClient chatClient;
-    public AiServiceImpl(ChatClient.Builder builder) {   // ← 注入 Builder
-        this.chatClient = builder.build();               // ← 造出 ChatClient
+    private final UserTools userTools;
+    public AiServiceImpl(ChatClient.Builder builder, UserTools userTools) {   // ← 注入 Builder
+        this.userTools = userTools;
+        this.chatClient = builder.defaultTools(userTools).build();               // ← 造出 ChatClient
     }
 
     @Override
